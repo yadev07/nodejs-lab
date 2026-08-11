@@ -14,9 +14,34 @@ const items = [
     { id: 10, name: "Ripjaws", species: "Piscciss Volann", planet: "Piscciss" }
 ];
 
+//Navigation
+app.get('/', (req, res)=>{
+    res.send(`
+        <h2>Home Page</h2>
+        <a href="/items">Go to /items Route</a>
+    `);
+});
+
 //GET /items - It will return all Aliens list
 app.get('/items', (req, res) => {
-    res.json(items);
+    let html = `
+        <h1>Ben 10 Aliens</h1>
+        <hr>
+    `;
+
+    items.forEach(item => {
+        html += `
+            <div>
+                <h2>${item.id}. ${item.name}</h2>
+                <p>Species: ${item.species}</p>
+                <p>Planet: ${item.planet}</p>
+                <a href="/items/${item.id}">View Details</a>
+                <hr>
+            </div>
+        `;
+    });
+
+    res.send(html);
 });
 
 //GET /items/:id - It will return one alien based on id
@@ -27,15 +52,24 @@ app.get('/items/:id', (req, res) => {
     const alien = items.find(item => item.id === id);
 
     if (alien) {
-        res.json(alien);
+        res.send(`
+            <h1>${alien.name}</h1>
+            <p><b>Species:</b> ${alien.species}</p>
+            <p><b>Planet:</b> ${alien.planet}</p>
+
+            <a href="/items">← Back to Aliens</a>
+        `);
     } else {
-        res.status(404).json({ error: "Alien not found..!" });
+        res.status(404).send(`
+            <h1>Alien Not Found</h1>
+            <a href="/items">← Back to Aliens</a>
+        `);
     }
 
 });
 
 app.use((req, res) => {
-    res.json(404).json({ error: "Route not found." });
+    res.status(404).json({ error: "Route not found." });
 });
 
 app.listen(3000, () => console.log("Server running on port http://localhost:3000"));

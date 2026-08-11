@@ -21,21 +21,27 @@ const students = [
 //Creating Server
 const server = http.createServer((req, res) => {
 
-    res.setHeader('Content-Type', 'application/json');
-    if (req.url === '/students' || req.url === '/students/name') {
-        res.end(JSON.stringify(students));
-    }
-    else if (req.url.startsWith('/students/name/')) {
-        const fname = String(req.url.split('/')[3]);
-        const student = students.filter(s => s.name.split(' ')[0].toLowerCase() === fname.toLowerCase());
-        
-        if (student) {
-            res.end(JSON.stringify(student));
-        } else {
-            res.writeHead(404);
-            res.end(JSON.stringify({ error: "Student not found" }));
-        }
+    res.setHeader('Content-Type', 'text/html');
 
+    // GET all students
+    if (req.url === '/students' || req.url === '/students/name') {
+
+        let html = `
+            <h1>Students List</h1>
+            <hr>
+        `;
+
+        students.forEach(student => {
+            html += `
+                <p>
+                    <b>${student.id}. ${student.name}</b>
+                    - ${student.course}
+                    <a href="/students/${student.id}">View Details</a>
+                </p>
+            `;
+        });
+
+        res.end(html);
     }
     else  if (req.url.startsWith('/students/')) {
         const id = Number(req.url.split('/')[2]);

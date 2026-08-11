@@ -29,19 +29,58 @@ const students = [
     { id: 24, name: "Aman Pratap Singh", course: "BIT" }
 ];
 
+
+app.get('/',(req, res)=>{
+    res.send(`
+        <a href = "/students/course/bca">List of BCA Students</h1><br>   
+        <a href = "/students/course/bit">List of BIT Students</h1>              
+    
+    `);
+});
+
 // GET all bca students
 app.get('/students/course/bca', (req, res)=>{
     
     const bcaStudents = students.filter(s => s.course.toLowerCase() === 'bca');
-    res.json(bcaStudents);
     
+    let html = `
+        <h1>BCA Students</h1>
+        <hr>
+    `;
+  
+    bcaStudents.forEach(student => {
+        html += `
+            <p>
+                <b>${student.id}. ${student.name}</b>
+                - ${student.course}
+            </p>
+        `;
+    });
+
+    res.send(html);
+
 }); 
 
 // GET all bit students
 app.get('/students/course/bit', (req, res)=>{
 
     const bitStudents = students.filter(s => s.course.toLowerCase() === 'bit');
-    res.json(bitStudents);
+    
+    let html = `
+        <h1>BIT Students</h1>
+        <hr>
+    `;
+
+    bitStudents.forEach(student => {
+        html += `
+            <p>
+                <b>${student.id}. ${student.name}</b>
+                - ${student.course}
+            </p>
+        `;
+    });
+
+    res.send(html);
 
 }); 
 
