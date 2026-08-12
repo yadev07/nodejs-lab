@@ -8,7 +8,8 @@
     "start": "nodemon server.js",
     "server": "nodemon server.js",
     "ben": "nodemon ben-server.js",
-    "student-server": "nodemon student-server.js"
+    "student-server": "nodemon student-server.js",
+    "advanced-server": "nodemon advanced-server.js"
   },
   "keywords": [],
   "author": "",
