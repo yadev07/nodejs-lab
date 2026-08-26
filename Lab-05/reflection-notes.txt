@@ -1,0 +1,16 @@
+Task-7 Reflection Notes
+
+1. While your order's setTimeout is “waiting,” is the Node.js process frozen?
+
+No, it doesn't. Because the timer is handled by node.js runtime, so JS does not sit there continously waiting for the timer to finish.
+While the timer is running, Node.js continue to handle other tasks or events. Once the timer finishes, it's callback is placed in the callback queue and the event loop executes it when the call stack is available.
+This is why, node.js can handle other asynchronous tasks while one oeder is waiting.
+
+2. Why does Promise.all() finish faster than running each order one after another with three separate await calls?
+
+Promise.all() starts all the three orders nearly at the same time, so their delay happens concurrently.
+While with three separate await calls, the 2nd order starts only when 1st order finishes, and the 3rd starts only when 2nd finishes. 
+Therefore, separate await calls take approximately the sum of all three delays. 
+
+On the other hand, Promise.all() only has to wait for all the promises to complete, so it's total time is roughly equal to the longest individual delay. 
+This makes Promise.all() useful when multiple independent asynchronous operations are runnig at the same time.
